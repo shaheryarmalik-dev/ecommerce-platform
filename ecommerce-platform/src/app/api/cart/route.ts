@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
 // GET: Fetch user's cart
-export async function GET(req: NextRequest) {
+export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -58,8 +58,7 @@ export async function POST(req: NextRequest) {
     });
   }
   // Find if item exists
-  const existing = cart.items.find((item: any) => item.productId === productId);
-  let updatedCart;
+  const existing = cart.items.find((item: { productId: string }) => item.productId === productId);
   if (existing) {
     // Update quantity
     await prisma.cartItem.update({
@@ -76,7 +75,7 @@ export async function POST(req: NextRequest) {
       },
     });
   }
-  updatedCart = await prisma.cart.findUnique({
+  const updatedCart = await prisma.cart.findUnique({
     where: { id: cart.id },
     include: { items: { include: { product: true } } },
   });
@@ -110,7 +109,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json([]);
   }
   // Find item
-  const existing = cart.items.find((item: any) => item.productId === productId);
+  const existing = cart.items.find((item: { productId: string }) => item.productId === productId);
   if (existing) {
     await prisma.cartItem.delete({ where: { id: existing.id } });
   }

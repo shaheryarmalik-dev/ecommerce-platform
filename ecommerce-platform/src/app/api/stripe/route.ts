@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export async function POST(req: Request) {
   try {
     const { items } = await req.json();
-    const line_items = items.map((item: any) => ({
+    const line_items = items.map((item: { name: string; price: number; quantity: number }) => ({
       price_data: {
         currency: 'usd',
         product_data: {
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       },
     });
     return NextResponse.json({ url: session.url });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Stripe session creation failed' }, { status: 500 });
   }
 } 

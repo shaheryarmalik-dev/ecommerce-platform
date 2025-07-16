@@ -41,7 +41,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       },
     });
     return NextResponse.json({ paymentMethod: updated });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to update payment method' }, { status: 500 });
   }
 }
@@ -61,7 +61,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     }
     await prisma.paymentMethod.delete({ where: { id } });
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to delete payment method' }, { status: 500 });
   }
 } 

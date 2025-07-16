@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
         include: { user: true },
       });
       return NextResponse.json({ reviews });
-    } catch (error) {
+    } catch {
       return NextResponse.json({ error: 'Failed to fetch reviews' }, { status: 500 });
     }
   }
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
       include: { product: true },
     });
     return NextResponse.json({ reviews });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch reviews' }, { status: 500 });
   }
 } 

@@ -6,7 +6,6 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function GET(
-  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -30,8 +29,8 @@ export async function GET(
     }
 
     return NextResponse.json(address);
-  } catch (error) {
-    console.error('Error fetching address:', error);
+  } catch {
+    console.error('Error fetching address');
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -71,14 +70,13 @@ export async function PUT(
     });
 
     return NextResponse.json(address);
-  } catch (error) {
-    console.error('Error updating address:', error);
+  } catch {
+    console.error('Error updating address');
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
 export async function DELETE(
-  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -98,8 +96,8 @@ export async function DELETE(
     });
 
     return NextResponse.json({ message: 'Address deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting address:', error);
+  } catch {
+    console.error('Error deleting address');
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

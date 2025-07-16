@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export async function GET(req: any, { params }: { params: Promise<{ id: string }> }) {
+export async function GET({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   try {
     const product = await prisma.product.findUnique({ where: { id } });
@@ -11,8 +11,8 @@ export async function GET(req: any, { params }: { params: Promise<{ id: string }
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
     return NextResponse.json(product);
-  } catch (error) {
-    console.error('PRODUCT API ERROR:', error);
+  } catch {
+    console.error('PRODUCT API ERROR');
     return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 });
   }
 } 
