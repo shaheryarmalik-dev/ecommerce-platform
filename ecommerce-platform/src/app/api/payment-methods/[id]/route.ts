@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const { id } = params;
+  const { id } = await params;
   const data = await req.json();
   const { type, cardBrand, cardLast4, cardExpMonth, cardExpYear, paypalEmail, isDefault } = data;
   if (!type || (type === 'card' && (!cardBrand || !cardLast4 || !cardExpMonth || !cardExpYear)) || (type === 'paypal' && !paypalEmail)) {
@@ -46,12 +46,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  const { id } = params;
+  const { id } = await params;
   try {
     const paymentMethod = await prisma.paymentMethod.findUnique({ where: { id } });
     if (!paymentMethod) return NextResponse.json({ error: 'Payment method not found' }, { status: 404 });
