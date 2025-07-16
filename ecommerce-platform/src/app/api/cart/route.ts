@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     });
   }
   // Find if item exists
-  const existing = cart.items.find((item) => item.productId === productId);
+  const existing = cart.items.find((item: any) => item.productId === productId);
   let updatedCart;
   if (existing) {
     // Update quantity
@@ -110,7 +110,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json([]);
   }
   // Find item
-  const existing = cart.items.find((item) => item.productId === productId);
+  const existing = cart.items.find((item: any) => item.productId === productId);
   if (existing) {
     await prisma.cartItem.delete({ where: { id: existing.id } });
   }
