@@ -4,6 +4,18 @@ import { CartProvider } from "@/components/CartContext";
 import { WishlistProvider } from "@/components/WishlistContext";
 import { useEffect, useCallback, useState } from "react";
 
+// TypeScript declarations for Tidio API
+declare global {
+  interface Window {
+    tidioChatApi?: {
+      hide: () => void;
+      show: () => void;
+      open: () => void;
+      hideWidget?: () => void;
+    };
+  }
+}
+
 export default function ClientProviders({ children }: { children: React.ReactNode }) {
   const [chatOpen, setChatOpen] = useState(false);
 
@@ -21,9 +33,11 @@ export default function ClientProviders({ children }: { children: React.ReactNod
         }
       } else {
         document.addEventListener("tidioChat-ready", function () {
-          window.tidioChatApi.hide();
-          if (window.tidioChatApi.hideWidget) {
-            window.tidioChatApi.hideWidget();
+          if (window.tidioChatApi) {
+            window.tidioChatApi.hide();
+            if (window.tidioChatApi.hideWidget) {
+              window.tidioChatApi.hideWidget();
+            }
           }
         });
       }
@@ -41,7 +55,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
     observer.observe(document.body, { childList: true, subtree: true });
 
     // Listen for Tidio chat open/close events
-    function handleTidioEvents(e) {
+    function handleTidioEvents(e: MessageEvent) {
       if (e.data && typeof e.data === "string" && e.data.indexOf("tidio-chat-opened") !== -1) {
         setChatOpen(true);
       }
