@@ -1,5 +1,0 @@
-{
-  "buildCommand": "cd ecommerce-platform && npm run build",
-  "installCommand": "cd ecommerce-platform && npm install",
-  "outputDirectory": "ecommerce-platform/.next"
-} 
