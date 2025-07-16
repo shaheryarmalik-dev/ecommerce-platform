@@ -47,7 +47,7 @@ export default function ClientProviders({ children }: { children: React.ReactNod
 
     // MutationObserver to always hide the Tidio default button
     const observer = new MutationObserver(() => {
-      const tidioButton = document.querySelector('iframe[title="Tidio Chat"]');
+      const tidioButton = document.querySelector('iframe[title="Tidio Chat"]') as HTMLElement;
       if (tidioButton) {
         tidioButton.style.display = "none";
       }
