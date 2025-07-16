@@ -2,6 +2,7 @@
   "name": "ecommerce-platform",
   "version": "0.1.0",
   "private": true,
+  "comment": "Force new deployment with dependencies",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
