@@ -8,10 +8,18 @@ import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
+type Product = {
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: number;
+  description?: string;
+  category?: string;
+};
 export default function ShopPage() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "All";
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);

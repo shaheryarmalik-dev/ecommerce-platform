@@ -1,15 +1,47 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString();
 }
 
+type Product = {
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: number;
+  description?: string;
+  stock?: number;
+  avgRating?: number;
+  reviewCount?: number;
+};
+type OrderItem = {
+  id: string;
+  product: Product;
+  quantity: number;
+  price: number;
+};
+type Payment = {
+  provider: string;
+  providerId: string;
+  amount: number;
+  status: string;
+};
+type Order = {
+  id: string;
+  createdAt: string;
+  items: OrderItem[];
+  total: number;
+  status: string;
+  payment?: Payment;
+};
+
 export default function OrderHistory() {
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selected, setSelected] = useState<any | null>(null);
+  const [selected, setSelected] = useState<Order | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -83,10 +115,10 @@ export default function OrderHistory() {
             <div className="mb-4">
               <div className="font-semibold mb-1">Items:</div>
               <ul className="divide-y divide-gray-100">
-                {selected.items.map((item: any) => (
+                {selected.items.map((item) => (
                   <li key={item.id} className="py-2 flex items-center gap-3">
                     {item.product?.imageUrl && (
-                      <img src={item.product.imageUrl} alt={item.product.name} className="w-12 h-12 object-cover rounded" />
+                      <Image src={item.product.imageUrl} alt={item.product.name} width={48} height={48} className="w-12 h-12 object-cover rounded" />
                     )}
                     <div className="flex-1">
                       <div className="font-medium text-blue-700">{item.product?.name}</div>

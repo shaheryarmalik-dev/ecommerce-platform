@@ -35,6 +35,7 @@ export default function ProductCard({ product }: { product: Product }) {
     }
     await addToCart({
       id: product.id,
+      productId: product.id,
       name: product.name,
       price: product.price,
       imageUrl: product.imageUrl,

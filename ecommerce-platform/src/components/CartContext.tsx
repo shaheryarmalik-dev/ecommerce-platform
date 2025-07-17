@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 
 export type CartItem = {
   id: string;
+  productId: string;
   name: string;
   price: number;
   imageUrl: string;
@@ -36,10 +37,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const data = await res.json();
         setItems(
           data.map((item: any) => ({
-            id: item.productId,
-            name: item.product?.name || "",
-            price: item.product?.price || 0,
-            imageUrl: item.product?.imageUrl || "",
+            id: item.productId || item.id,
+            productId: item.productId || item.id,
+            name: item.product?.name || item.name || "",
+            price: item.product?.price ?? item.price ?? 0,
+            imageUrl: item.product?.imageUrl || item.imageUrl || "",
             quantity: item.quantity,
           }))
         );

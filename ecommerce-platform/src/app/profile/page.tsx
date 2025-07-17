@@ -7,6 +7,7 @@ import AddressBook from "@/components/AddressBook";
 import PaymentMethods from "@/components/PaymentMethods";
 import AccountSettings from "@/components/AccountSettings";
 import Reviews from "@/components/Reviews";
+import Image from "next/image";
 
 const sections = [
   { key: "profile", label: "Profile Overview", icon: UserCircleIcon },
@@ -74,7 +75,7 @@ export default function ProfilePage() {
       <aside className="w-64 bg-white border-r shadow-sm flex flex-col items-center py-8">
         <div className="flex flex-col items-center mb-8">
           {user.avatar ? (
-            <img src={user.avatar} alt="Avatar" className="w-20 h-20 rounded-full mb-2" />
+            <Image src={user.avatar} alt="Avatar" width={80} height={80} className="w-20 h-20 rounded-full mb-2" />
           ) : (
             <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-3xl font-bold text-blue-700 mb-2">
               {user.name[0]}
@@ -194,9 +195,9 @@ export default function ProfilePage() {
                     {wishlist.map((item) => (
                       <div key={item.id} className="flex items-center gap-4 p-3 bg-white rounded shadow-sm">
                         {item.imageUrl ? (
-                          <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                          <Image src={item.imageUrl} alt={item.name} width={64} height={64} className="w-16 h-16 object-cover rounded" />
                         ) : (
-                          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=100&q=80" alt="No image" className="w-16 h-16 object-cover rounded opacity-50" />
+                          <Image src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=100&q=80" alt="No image" width={64} height={64} className="w-16 h-16 object-cover rounded opacity-50" />
                         )}
                         <div className="flex-1">
                           <div className="font-semibold text-blue-700">{item.name}</div>

@@ -1,5 +1,7 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 function StarRating({ value }: { value: number }) {
   return (
@@ -22,19 +24,19 @@ function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString();
 }
 
-function ReviewForm({ initial, onSave, onCancel, loading }: any) {
+function ReviewForm({ initial, onSave, onCancel, loading }: { initial: Review; onSave: (form: Review) => void; onCancel: () => void; loading: boolean }) {
   const [rating, setRating] = useState(initial.rating);
   const [comment, setComment] = useState(initial.comment || "");
   const [error, setError] = useState("");
 
-  function handleSubmit(e: any) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!rating || rating < 1 || rating > 5) {
       setError("Please select a rating.");
       return;
     }
     setError("");
-    onSave({ rating, comment });
+    onSave({ ...initial, rating, comment });
   }
 
   return (
@@ -73,10 +75,23 @@ function ReviewForm({ initial, onSave, onCancel, loading }: any) {
   );
 }
 
+type Review = {
+  id: string;
+  product: {
+    id: string;
+    name: string;
+    imageUrl?: string;
+  };
+  rating: number;
+  comment?: string;
+  createdAt: string;
+  user?: { name?: string };
+};
+
 export default function Reviews() {
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState<{ review: any } | null>(null);
+  const [modal, setModal] = useState<{ review: Review } | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -101,7 +116,7 @@ export default function Reviews() {
     fetchReviews();
   }, []);
 
-  function handleEdit(review: any) {
+  function handleEdit(review: Review) {
     setModal({ review });
   }
 
@@ -123,7 +138,7 @@ export default function Reviews() {
       .finally(() => setDeleting(false));
   }
 
-  function handleSave(form: any) {
+  function handleSave(form: Review) {
     if (!modal) return;
     setSaving(true);
     setError("");
@@ -170,7 +185,7 @@ export default function Reviews() {
                 className="p-4 rounded-xl shadow bg-white border border-gray-100 flex gap-4 items-center"
               >
                 {r.product?.imageUrl && (
-                  <img src={r.product.imageUrl} alt={r.product.name} className="w-16 h-16 object-cover rounded" />
+                  <Image src={r.product.imageUrl} alt={r.product.name} width={64} height={64} className="w-16 h-16 object-cover rounded" />
                 )}
                 <div className="flex-1">
                   <div className="font-semibold text-blue-700">{r.product?.name}</div>

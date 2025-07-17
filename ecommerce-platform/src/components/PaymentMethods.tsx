@@ -1,40 +1,57 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const emptyCard = {
+const emptyCard: PaymentFormType = {
   type: "card",
   cardBrand: "",
   cardLast4: "",
-  cardExpMonth: "",
-  cardExpYear: "",
+  cardExpMonth: undefined,
+  cardExpYear: undefined,
   paypalEmail: "",
   isDefault: false,
 };
-const emptyPaypal = {
+const emptyPaypal: PaymentFormType = {
   type: "paypal",
   cardBrand: "",
   cardLast4: "",
-  cardExpMonth: "",
-  cardExpYear: "",
+  cardExpMonth: undefined,
+  cardExpYear: undefined,
   paypalEmail: "",
   isDefault: false,
 };
 
-function PaymentForm({ initial, onSave, onCancel, loading }: any) {
-  const [form, setForm] = useState(initial || emptyCard);
+type PaymentFormType = {
+  type: "card" | "paypal";
+  cardBrand?: string;
+  cardLast4?: string;
+  cardExpMonth?: number;
+  cardExpYear?: number;
+  paypalEmail?: string;
+  isDefault: boolean;
+};
+
+type PaymentFormProps = {
+  initial: typeof emptyCard | typeof emptyPaypal;
+  onSave: (data: typeof emptyCard | typeof emptyPaypal) => void;
+  onCancel: () => void;
+  loading: boolean;
+};
+
+function PaymentForm({ initial, onSave, onCancel, loading }: PaymentFormProps) {
+  const [form, setForm] = useState<PaymentFormType>(initial || emptyCard);
   const [error, setError] = useState("");
 
-  function handleChange(e: any) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
-    setForm(f => ({ ...f, [name]: type === "checkbox" ? checked : value }));
+    setForm(f => ({ ...f, [name]: type === "checkbox" ? checked : (name === "cardExpMonth" || name === "cardExpYear" ? Number(value) : value) }));
   }
 
-  function handleTypeChange(e: any) {
+  function handleTypeChange(e: ChangeEvent<HTMLInputElement>) {
     const type = e.target.value;
     setForm(type === "card" ? { ...emptyCard, isDefault: form.isDefault } : { ...emptyPaypal, isDefault: form.isDefault });
   }
 
-  function handleSubmit(e: any) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (form.type === "card") {
       if (!form.cardBrand || !form.cardLast4 || !form.cardExpMonth || !form.cardExpYear) {
@@ -50,8 +67,8 @@ function PaymentForm({ initial, onSave, onCancel, loading }: any) {
     setError("");
     onSave({
       ...form,
-      cardExpMonth: form.cardExpMonth ? parseInt(form.cardExpMonth) : undefined,
-      cardExpYear: form.cardExpYear ? parseInt(form.cardExpYear) : undefined,
+      cardExpMonth: form.cardExpMonth ? Number(form.cardExpMonth) : undefined,
+      cardExpYear: form.cardExpYear ? Number(form.cardExpYear) : undefined,
     });
   }
 

@@ -6,9 +6,17 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
+type CartItem = {
+  id: string;
+  productId: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  quantity: number;
+};
 export default function CartPage() {
   const { items, removeFromCart } = useCart();
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce((sum: number, item: CartItem) => sum + item.price * item.quantity, 0);
   const { data: session } = useSession();
   const router = useRouter();
 

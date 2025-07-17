@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-20 flex items-center justify-between px-8 py-4 border-b bg-white shadow-md backdrop-blur">
       <div className="flex items-center gap-3">
-        <a href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <span className="inline-block">
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="18" cy="18" r="18" fill="var(--color-primary)"/>
@@ -24,24 +24,24 @@ export default function Header() {
             </svg>
           </span>
           <span className="text-2xl font-bold text-blue-700 tracking-tight">ShopEase</span>
-        </a>
+        </Link>
       </div>
       <nav className="hidden md:flex gap-8 text-base font-medium text-gray-700">
-        <a href="/shop" className="hover:text-blue-700 transition">Shop</a>
+        <Link href="/shop" className="hover:text-blue-700 transition">Shop</Link>
       </nav>
       <div className="flex items-center gap-4">
         {/* Home Icon */}
-        <a href="/" title="Home" className="group">
+        <Link href="/" title="Home" className="group">
           <HomeIcon className="w-7 h-7 text-gray-400 group-hover:text-blue-600 transition" />
-        </a>
+        </Link>
         {/* Wishlist Icon with Badge (only if logged in) */}
         {session && session.user && (
-          <a href="/profile" title="Wishlist" className="relative group">
+          <Link href="/profile" title="Wishlist" className="relative group">
             <HeartIcon className="w-7 h-7 text-gray-400 group-hover:text-red-500 transition" />
             {wishlist.length > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 font-bold shadow">{wishlist.length}</span>
             )}
-          </a>
+          </Link>
         )}
         {/* User menu if logged in, else show Login/Sign Up */}
         {session && session.user ? (

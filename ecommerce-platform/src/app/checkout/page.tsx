@@ -4,9 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
+type CartItem = {
+  id: string;
+  productId: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  quantity: number;
+};
 export default function CheckoutPage() {
   const { items } = useCart();
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce((sum: number, item: CartItem) => sum + item.price * item.quantity, 0);
 
   async function handleStripeCheckout() {
     const res = await fetch("/api/stripe", {

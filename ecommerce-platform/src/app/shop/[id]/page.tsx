@@ -4,10 +4,26 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "@/components/CartContext";
 
+type Product = {
+  id: string;
+  name: string;
+  imageUrl: string;
+  price: number;
+  description?: string;
+  stock?: number;
+  avgRating?: number;
+  reviewCount?: number;
+};
+type Review = {
+  id: string;
+  rating: number;
+  comment?: string;
+  user?: { name?: string };
+};
 export default function ProductDetailPage() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [reviews, setReviews] = useState([]);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { addToCart } = useCart();
@@ -51,7 +67,13 @@ export default function ProductDetailPage() {
       <p className="text-gray-600 mb-6 text-center">{product.description}</p>
       <button
         className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-semibold shadow mb-8"
-        onClick={() => addToCart(product)}
+        onClick={() => addToCart({
+          id: product.id,
+          productId: product.id,
+          name: product.name,
+          price: product.price,
+          imageUrl: product.imageUrl
+        })}
       >
         Add to Cart
       </button>

@@ -3,6 +3,23 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
+type CartItemWithProduct = {
+  id: string;
+  cartId: string;
+  productId: string;
+  quantity: number;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    imageUrl: string;
+    description?: string;
+    stock?: number;
+    avgRating?: number;
+    reviewCount?: number;
+  };
+};
+
 // GET: Fetch user's cart
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -58,7 +75,7 @@ export async function POST(req: NextRequest) {
     });
   }
   // Find if item exists
-  const existing = cart.items.find((item: { productId: string }) => item.productId === productId);
+  const existing = cart.items.find((item: CartItemWithProduct) => item.productId === productId);
   if (existing) {
     // Update quantity
     await prisma.cartItem.update({
@@ -109,7 +126,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json([]);
   }
   // Find item
-  const existing = cart.items.find((item: { productId: string }) => item.productId === productId);
+  const existing = cart.items.find((item: CartItemWithProduct) => item.productId === productId);
   if (existing) {
     await prisma.cartItem.delete({ where: { id: existing.id } });
   }

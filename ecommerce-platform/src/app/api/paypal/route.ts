@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     // In a real app, use the PayPal REST SDK and authenticate with client ID/secret
     // Here, just return a mock order ID for demo purposes

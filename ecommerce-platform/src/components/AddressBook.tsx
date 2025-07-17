@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 const emptyAddress = {
   fullName: "",
@@ -13,23 +14,45 @@ const emptyAddress = {
   isDefault: false,
 };
 
-function AddressForm({ initial, onSave, onCancel, loading }: any) {
+type Address = {
+  id?: string;
+  fullName: string;
+  line1: string;
+  line2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  phone?: string;
+  isDefault: boolean;
+};
+type AddressFormProps = {
+  initial: Address;
+  onSave: (address: Address) => void;
+  onCancel: () => void;
+  loading: boolean;
+};
+function AddressForm({ initial, onSave, onCancel, loading }: AddressFormProps) {
   const [form, setForm] = useState(initial || emptyAddress);
   const [error, setError] = useState("");
 
-  function handleChange(e: any) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, type, checked } = e.target;
     setForm(f => ({ ...f, [name]: type === "checkbox" ? checked : value }));
   }
 
-  function handleSubmit(e: any) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!form.fullName || !form.line1 || !form.city || !form.state || !form.postalCode || !form.country) {
       setError("Please fill in all required fields.");
       return;
     }
     setError("");
-    onSave(form);
+    const formWithId = form as Address;
+    if (!formWithId.id) {
+      formWithId.id = crypto.randomUUID();
+    }
+    onSave(formWithId);
   }
 
   return (
@@ -82,9 +105,9 @@ function AddressForm({ initial, onSave, onCancel, loading }: any) {
 }
 
 export default function AddressBook() {
-  const [addresses, setAddresses] = useState<any[]>([]);
+  const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState<{ mode: "add" | "edit", address?: any } | null>(null);
+  const [modal, setModal] = useState<{ mode: "add" | "edit", address?: Address } | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -111,11 +134,11 @@ export default function AddressBook() {
     setModal({ mode: "add" });
   }
 
-  function handleEdit(address: any) {
+  function handleEdit(address: Address) {
     setModal({ mode: "edit", address });
   }
 
-  function handleDelete(address: any) {
+  function handleDelete(address: Address) {
     if (!window.confirm("Delete this address?")) return;
     setSaving(true);
     fetch(`/api/addresses/${address.id}`, { method: "DELETE" })
@@ -128,7 +151,7 @@ export default function AddressBook() {
       .finally(() => setSaving(false));
   }
 
-  function handleSave(form: any) {
+  function handleSave(form: Address) {
     setSaving(true);
     setError("");
     setSuccess("");
