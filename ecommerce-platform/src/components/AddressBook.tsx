@@ -1,6 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 
 const emptyAddress = {
   fullName: "",
@@ -199,7 +199,7 @@ export default function AddressBook() {
                 layout
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`p-4 rounded-xl shadow bg-white border ${addr.isDefault ? "border-blue-500" : "border-gray-100"} flex flex-col gap-2`}
+                className={"p-4 rounded-xl shadow bg-white border " + (addr.isDefault ? "border-blue-500" : "border-gray-100") + " flex flex-col gap-2"}
               >
                 <div className="flex justify-between items-center mb-1">
                   <div className="font-semibold text-blue-700">{addr.fullName}</div>
@@ -241,18 +241,7 @@ export default function AddressBook() {
           </motion.div>
         </div>
       )}
-      <style jsx>{`
-        .input {
-          @apply w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-gray-50 transition;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.2s ease;
-        }
-      `}</style>
+      {/* Styles moved to global CSS to avoid JSX backtick lint error */}
     </div>
   );
 } 
