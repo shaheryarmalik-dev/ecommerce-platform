@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const categories = ["All", "Electronics", "Wearables", "Audio", "Home"];
@@ -17,7 +16,7 @@ interface SearchBarProps {
 export default function SearchBar({ selectedCategory, setSelectedCategory, query, setQuery, suggestions = [], onQueryChange, onSuggestionClick }: SearchBarProps) {
   return (
     <div className="relative w-full">
-      <form className="w-full flex items-center bg-white rounded-lg shadow px-2 py-1 gap-2" onSubmit={e => { e.preventDefault(); onQueryChange && onQueryChange(query); }}>
+      <form className="w-full flex items-center bg-white rounded-lg shadow px-2 py-1 gap-2" onSubmit={e => { e.preventDefault(); if (onQueryChange) onQueryChange(query); }}>
         <select
           value={selectedCategory}
           onChange={e => setSelectedCategory(e.target.value)}
@@ -30,7 +29,7 @@ export default function SearchBar({ selectedCategory, setSelectedCategory, query
         <input
           type="text"
           value={query}
-          onChange={e => { setQuery(e.target.value); onQueryChange && onQueryChange(e.target.value); }}
+          onChange={e => { setQuery(e.target.value); if (onQueryChange) onQueryChange(e.target.value); }}
           placeholder="Search products..."
           className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-400 text-base px-2"
           autoComplete="off"
@@ -49,7 +48,7 @@ export default function SearchBar({ selectedCategory, setSelectedCategory, query
             <li
               key={s.id}
               className="px-4 py-2 hover:bg-blue-50 cursor-pointer text-gray-800"
-              onMouseDown={() => onSuggestionClick && onSuggestionClick(s.id)}
+              onMouseDown={() => { if (onSuggestionClick) onSuggestionClick(s.id); }}
             >
               {s.name}
             </li>

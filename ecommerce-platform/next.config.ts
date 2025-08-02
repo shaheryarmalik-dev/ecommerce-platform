@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Remove static export for Netlify - we need server-side functionality
+  // output: 'export',
+  // basePath: `/${repo}`,
+  // assetPrefix: `/${repo}/`,
   images: {
     domains: [
       'example.com',

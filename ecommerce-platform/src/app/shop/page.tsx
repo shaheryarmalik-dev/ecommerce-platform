@@ -1,11 +1,9 @@
 "use client";
 import ProductCard from "@/components/ProductCard";
 import SearchBar from "@/components/SearchBar";
-import CategoryFilters from "@/components/CategoryFilters";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 type Product = {
@@ -33,8 +31,12 @@ export default function ShopPage() {
         if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
         setProducts(data);
-      } catch (err: any) {
-        setError(err.message || "Error fetching products");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message || "Error fetching products");
+        } else {
+          setError("Error fetching products");
+        }
       } finally {
         setLoading(false);
       }

@@ -62,7 +62,7 @@ export default function OrderHistory() {
   if (!orders.length) return (
     <div className="flex flex-col items-center justify-center py-12 text-gray-400">
       <svg className="w-12 h-12 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3h18M9 3v18m6-18v18M3 21h18" /></svg>
-      <div className="text-lg">You haven't placed any orders yet.</div>
+      <div className="text-lg">You haven&apos;t placed any orders yet.</div>
     </div>
   );
 

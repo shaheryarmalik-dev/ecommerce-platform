@@ -59,7 +59,7 @@ export default function AccountSettings() {
       });
   }, []);
 
-  function handleSave(e: any) {
+  function handleSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSaving(true);
     setError("");

@@ -24,8 +24,16 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const LOCAL_KEY = "cart_items";
 
+type CartItemAPI = CartItem & {
+  product?: {
+    name?: string;
+    price?: number;
+    imageUrl?: string;
+  };
+};
+
 export function CartProvider({ children }: { children: ReactNode }) {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [items, setItems] = useState<CartItem[]>([]);
 
   // Load cart from API or localStorage
@@ -34,9 +42,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       // Logged-in: fetch from API
       const res = await fetch("/api/cart");
       if (res.ok) {
-        const data = await res.json();
+        const data: CartItemAPI[] = await res.json();
         setItems(
-          data.map((item: any) => ({
+          data.map((item) => ({
             id: item.productId || item.id,
             productId: item.productId || item.id,
             name: item.product?.name || item.name || "",

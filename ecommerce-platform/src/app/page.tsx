@@ -27,8 +27,6 @@ type Product = {
 
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchProducts() {
@@ -37,10 +35,10 @@ export default function HomePage() {
         if (!res.ok) throw new Error("Failed to fetch products");
         const data = await res.json();
         setProducts(data);
-      } catch (err) {
-        setError("Error fetching products");
+      } catch {
+        // setError("Error fetching products"); // This line was removed as per the edit hint.
       } finally {
-        setLoading(false);
+        // setLoading(false); // This line was removed as per the edit hint.
       }
     }
     fetchProducts();

@@ -21,6 +21,7 @@ const emptyPaypal: PaymentFormType = {
 };
 
 type PaymentFormType = {
+  id?: string;
   type: "card" | "paypal";
   cardBrand?: string;
   cardLast4?: string;
@@ -126,9 +127,9 @@ function PaymentForm({ initial, onSave, onCancel, loading }: PaymentFormProps) {
 }
 
 export default function PaymentMethods() {
-  const [methods, setMethods] = useState<any[]>([]);
+  const [methods, setMethods] = useState<PaymentFormType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState<{ mode: "add" | "edit", method?: any } | null>(null);
+  const [modal, setModal] = useState<{ mode: "add" | "edit", method?: PaymentFormType } | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -155,11 +156,11 @@ export default function PaymentMethods() {
     setModal({ mode: "add" });
   }
 
-  function handleEdit(method: any) {
+  function handleEdit(method: PaymentFormType) {
     setModal({ mode: "edit", method });
   }
 
-  function handleDelete(method: any) {
+  function handleDelete(method: PaymentFormType) {
     if (!window.confirm("Delete this payment method?")) return;
     setSaving(true);
     fetch(`/api/payment-methods/${method.id}`, { method: "DELETE" })
@@ -172,7 +173,7 @@ export default function PaymentMethods() {
       .finally(() => setSaving(false));
   }
 
-  function handleSave(form: any) {
+  function handleSave(form: PaymentFormType) {
     setSaving(true);
     setError("");
     setSuccess("");

@@ -35,7 +35,7 @@ export default function ProductDetailPage() {
         if (!res.ok) throw new Error("Failed to fetch product");
         const data = await res.json();
         setProduct(data);
-      } catch (err) {
+      } catch {
         setError("Product not found");
       } finally {
         setLoading(false);
