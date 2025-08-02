@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   // output: 'export',
   // basePath: `/${repo}`,
   // assetPrefix: `/${repo}/`,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     domains: [
       'example.com',

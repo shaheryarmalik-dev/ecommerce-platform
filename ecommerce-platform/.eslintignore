@@ -1,1 +1,5 @@
-src/generated/prisma/ 
+# Generated Prisma files
+src/generated/
+node_modules/
+.next/
+out/ 
