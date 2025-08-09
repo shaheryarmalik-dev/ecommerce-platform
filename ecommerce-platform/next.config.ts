@@ -1,22 +1,31 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Remove static export for Netlify - we need server-side functionality
-  // output: 'export',
-  // basePath: `/${repo}`,
-  // assetPrefix: `/${repo}/`,
   eslint: {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: [
-      'example.com',
-      'images.unsplash.com',
-      'plus.unsplash.com',
-      'media.istockphoto.com',
-      'unsplash.com',
-      // No new domains needed for current home page images, but keep this list updated if you add more sources
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'plus.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.istockphoto.com',
+      }
     ],
+  },
+  experimental: {
+    optimizePackageImports: ['@heroicons/react', 'framer-motion'],
   },
 };
 
